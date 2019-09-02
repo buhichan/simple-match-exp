@@ -109,6 +109,7 @@ function tokenize(str) {
     function makeSyntaxError(i) {
         return new SyntaxError("Syntax Error at column " + i + ": " + str.slice(Math.max(0, i - 5), i) + " >>>" + str[i] + "<<<");
     }
+    var quoted = false;
     while (i < str.length) {
         switch (str[i]) {
             case "(": {
@@ -145,12 +146,21 @@ function tokenize(str) {
             case " ": {
                 break;
             }
+            case "\"": {
+                quoted = true;
+                break;
+            }
             default: {
                 var tokenStart = i;
-                while (i < str.length && !["!", " ", "&", "|", "(", ")"].includes(str[i])) {
+                while (i < str.length && (quoted ? str[i] !== "\"" : !["!", " ", "&", "|", "(", ")"].includes(str[i]))) {
                     i++;
                 }
-                readToken(new Identifier(str.slice(tokenStart, i)));
+                var token = str.slice(tokenStart, i);
+                quoted = false;
+                if (quoted) {
+                    i++;
+                }
+                readToken(new Identifier(token));
                 i--;
             }
         }
