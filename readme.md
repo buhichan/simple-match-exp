@@ -7,7 +7,7 @@ Because regexp is still too diffcult for some people. 😂
 ```javascript
 import compile from "simple-match-exp"
 
-const func4 = compile("A&&C||D&&E && !B && !\"ABC && ||\" || \"\\\"\" ")
+const func4 = compile("A&&C||D&&E && !B && !\"ABC && ||\" || !\"\\\"\" ")
 
 console.assert(func4("cjaijejoifAC"))
 ```
