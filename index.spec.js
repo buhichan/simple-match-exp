@@ -6,7 +6,7 @@ const func2 = compile(" CSO && ( 12331 || 12332 ) ")
 const func3 = compile(" !CSO && ( 12331 || 12332 ) ")
 const func4 = compile("A&&C||D&&E && !B")
 const func5 = compile("\"A C\"||\"D E\"&&\"N G\"")
-const func6 = compile("\"haha\\\"haha\"")
+const func6 = compile("\"haha\\\"haha\\\\haha\"")
 
 function test(func,s,r){
     console.assert(func(s)===r,s+" Failed")
@@ -36,8 +36,7 @@ try{
     test(func5,"D EjcoaeijfN G",true)
     test(func5,"D EjcoaeijfN ",false)
 
-    test(func6,"haha\"haha", true)
-    test(func6,"hahahaha", false)
+    test(func6,"haha\"haha\\haha", true)
 
     let err = null
     try{
