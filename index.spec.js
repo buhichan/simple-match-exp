@@ -38,6 +38,14 @@ try{
     test(func5,"D EjcoaeijfN G",true)
     test(func5,"D EjcoaeijfN ",false)
 
+    let err = null
+    try{
+        compile("(haha")
+    }catch(e){
+        err = e
+    }
+    console.assert(err!==null && err.message.includes("Invalid Syntax"))
+
 }catch(e){
 
 }

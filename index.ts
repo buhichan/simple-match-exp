@@ -106,38 +106,44 @@ function tokenize(str:string){
         switch(str[i]){
             case "(":{
                 readToken(new LeftParen())
+                i++
                 break;
             }
             case ")":{
                 readToken(new RightParen())
+                i++
                 break;
             }
             case "&":{
                 if(i < str.length - 1 && str[i+1]==="&" ){
                     readToken(new And())
-                    i++
                 }else{
                     throw makeSyntaxError(i)
                 }
+                i+=2;
                 break;
             }
             case "|":{
                 if(i < str.length - 1 && str[i+1]==="|"){
                     readToken(new Or())
-                    i++
                 }else{
                     throw makeSyntaxError(i)
                 }
+                i+=2;
                 break;
             }
             case "!":{
                 readToken(new Not())
+                i++;
+                break;
             }
             case " ":{
+                i++;
                 break;
             }
             case "\"":{
                 quoted = true
+                i++;
                 break;
             }
             default:{
@@ -151,10 +157,9 @@ function tokenize(str:string){
                     i++
                 }
                 readToken(new Identifier(token))
-                i--
+                break;
             }
         }
-        i++;
     }
 
     function readToken(token:Token){
@@ -216,12 +221,18 @@ function tokenize(str:string){
                 }else{
                     outputAST.push(new AST(func,[]))
                 }
+                return true
             }
+            return false
         }
+        return false
     }
 
     while(operatorStack.length > 0){
-        makeAstNode()
+        let successful = makeAstNode()
+        if(!successful){
+            throw new Error("Invalid Syntax")
+        }
     }
 
     if(outputAST.length > 1){
