@@ -1,10 +1,11 @@
 {
   "name": "simple-match-exp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "simple string matching expression dsl",
   "main": "index.js",
   "author": "buhichan",
   "license": "MIT",
   "scripts": {
-    "test":"node index.spec.js"
-  }}
+    "test": "node index.spec.js"
+  }
+}
