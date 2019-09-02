@@ -152,10 +152,10 @@ function tokenize(str:string){
                     i++
                 }
                 const token = str.slice(tokenStart, i)
-                quoted = false
                 if(quoted){
                     i++
                 }
+                quoted = false
                 readToken(new Identifier(token))
                 break;
             }
@@ -178,7 +178,7 @@ function tokenize(str:string){
                 topOpStack && 
                 topOpStack instanceof Func && 
                 (
-                    topOpStack.isRightAssociative && topOpStack.precedence === token.precedence || 
+                    !topOpStack.isRightAssociative && topOpStack.precedence === token.precedence || 
                     topOpStack.precedence > token.precedence
                 )
             ){

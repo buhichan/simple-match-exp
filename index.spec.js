@@ -1,15 +1,15 @@
 
 const {default:compile} = require("./index.js")
 
-const testString  = " A && B || C"
+const testString  = " A && B || C || D"
 const testString2 = " CSO && ( 12331 || 12332 ) ";
 const testString3 = " !CSO && ( 12331 || 12332 ) ";
-const func4 = compile("A&&C||D&&E && !B")
-const func5 = compile("\"A C\"||\"D E\"&&\"N G\"")
 
 const func1 = compile(testString)
 const func2 = compile(testString2)
 const func3 = compile(testString3)
+const func4 = compile("A&&C||D&&E && !B")
+const func5 = compile("\"A C\"||\"D E\"&&\"N G\"")
 
 function test(func,s,r){
     console.assert(func(s)===r,s+" Failed")
@@ -17,6 +17,7 @@ function test(func,s,r){
 
 try{
 
+    test(func1,"A",false)
     test(func1,"A caefc B",true)
     test(func1,"AB",true)
     test(func1,"CA",true)

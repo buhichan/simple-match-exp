@@ -162,10 +162,10 @@ function tokenize(str) {
                     i++;
                 }
                 var token = str.slice(tokenStart, i);
-                quoted = false;
                 if (quoted) {
                     i++;
                 }
+                quoted = false;
                 readToken(new Identifier(token));
                 break;
             }
@@ -186,7 +186,7 @@ function tokenize(str) {
             var topOpStack = operatorStack[operatorStack.length - 1];
             while (topOpStack &&
                 topOpStack instanceof Func &&
-                (topOpStack.isRightAssociative && topOpStack.precedence === token.precedence ||
+                (!topOpStack.isRightAssociative && topOpStack.precedence === token.precedence ||
                     topOpStack.precedence > token.precedence)) {
                 makeAstNode();
                 topOpStack = operatorStack[operatorStack.length - 1];
