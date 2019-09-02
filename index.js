@@ -109,7 +109,6 @@ function tokenize(str) {
     function makeSyntaxError(i) {
         return new SyntaxError("Syntax Error at column " + i + ": " + str.slice(Math.max(0, i - 5), i) + " >>>" + str[i] + "<<<");
     }
-    var quoted = false;
     while (i < str.length) {
         switch (str[i]) {
             case "(": {
@@ -151,17 +150,25 @@ function tokenize(str) {
                 i++;
                 break;
             }
-            case "\"": {
-                quoted = true;
-                i++;
-                break;
-            }
             default: {
-                var tokenStart = i;
-                while (i < str.length && (quoted ? str[i] !== "\"" : !["!", " ", "&", "|", "(", ")"].includes(str[i]))) {
+                var quoted = str[i] === "\"";
+                if (quoted) {
                     i++;
                 }
-                var token = str.slice(tokenStart, i);
+                var token = "";
+                while (true) {
+                    if (i >= str.length) {
+                        break;
+                    }
+                    if (quoted ? str[i] === "\"" : ["!", " ", "&", "|", "(", ")"].includes(str[i])) {
+                        break;
+                    }
+                    if (str[i] === "\\") {
+                        i++;
+                    }
+                    token += str[i];
+                    i++;
+                }
                 if (quoted) {
                     i++;
                 }

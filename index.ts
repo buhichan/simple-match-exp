@@ -99,8 +99,6 @@ function tokenize(str:string){
         return new SyntaxError(`Syntax Error at column ${i}: ${str.slice(Math.max(0,i-5),i)} >>>${str[i]}<<<`)
     }
 
-    let quoted = false;
-    
     while(i<str.length){
 
         switch(str[i]){
@@ -141,17 +139,25 @@ function tokenize(str:string){
                 i++;
                 break;
             }
-            case "\"":{
-                quoted = true
-                i++;
-                break;
-            }
             default:{
-                let tokenStart = i
-                while(i < str.length && (quoted ? str[i] !== "\""  : !["!"," ","&","|","(",")"].includes(str[i]) )){
+                let quoted = str[i] === "\""
+                if(quoted){
                     i++
                 }
-                const token = str.slice(tokenStart, i)
+                let token = ""
+                while(true){
+                    if(i >= str.length){
+                        break;
+                    }
+                    if(quoted ? str[i] === "\""  : ["!"," ","&","|","(",")"].includes(str[i]) ){
+                        break;
+                    }
+                    if(str[i] === "\\"){
+                        i++;
+                    }
+                    token += str[i]
+                    i++
+                }
                 if(quoted){
                     i++
                 }
